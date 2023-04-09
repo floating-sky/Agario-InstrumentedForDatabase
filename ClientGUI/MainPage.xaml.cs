@@ -10,12 +10,28 @@ namespace ClientGUI
         private readonly ILogger<MainPage> _logger;
         private WorldDrawable worldView;
         private bool initialized;
+        private String userName;
+        private string serverName;
+
         public MainPage(ILogger<MainPage> logger) 
         {
             _logger = logger;
             InitializeComponent();
             worldView= new WorldDrawable();
             initialized = false;
+            userName = PlayerNameBox.Text;
+            serverName = ServerNameBox.Text;
+
+        }
+
+        void PlayerNameBoxChanged(object sender, EventArgs e)
+        {
+            userName= PlayerNameBox.Text;
+        }
+
+        void ServerNameBoxChanged(Object sender, EventArgs e)
+        {
+            serverName = ServerNameBox.Text;
         }
 
         void ConnectToServerButtonClicked(object sender, EventArgs e) 

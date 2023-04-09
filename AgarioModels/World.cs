@@ -11,9 +11,19 @@ namespace AgarioModels
     {
         private readonly ILogger _logger;
 
+        public readonly int width;
+        public readonly int height;
+
+        public HashSet<Player> playerSet;
+        public HashSet<Food> foodSet;
+        
         public World(ILogger logger) 
         {
             _logger = logger;
+            playerSet = new HashSet<Player>();
+            foodSet = new HashSet<Food>();
+            width =  5000;
+            height = 5000;
         }
     }
 }
