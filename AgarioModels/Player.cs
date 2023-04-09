@@ -8,5 +8,6 @@ namespace AgarioModels
 {
     internal class Player : GameObject
     {
+        public string Name { get; set; }
     }
 }
