@@ -1,12 +1,14 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Maui.Animations;
+using System.Diagnostics;
 using System.Timers;
 
 namespace TowardAgarioStepOne
 {
     public partial class MainPage : ContentPage
     {
-        static WorldDrawable world;
+        static WorldDrawable world = new();
         bool initialized = false;
+        
         public MainPage()
         {
             InitializeComponent();
@@ -31,20 +33,21 @@ namespace TowardAgarioStepOne
 
         private void InitializeGameLogic()
         {
-            world = (WorldDrawable)PlaySurface.Drawable;
+            System.Timers.Timer timer = new System.Timers.Timer();
+            PlaySurface.Drawable = world;
             world.model = new();
             //Window.Width = 500;
-            System.Timers.Timer timer = new(2000);
-            timer.Start();
-            timer.Elapsed += GameStep;
+            timer.Elapsed += new ElapsedEventHandler(GameStep);
+            timer.AutoReset = true;
+            timer.Enabled = true;
         }
 
-        private void GameStep(object sender, ElapsedEventArgs e)
+        private void GameStep(object source, ElapsedEventArgs e)
         {
             world.model.AdvanceGameOneStep();
             PlaySurface.Invalidate();
-            circleCenter.Text += world.model.circlePosition;
-            direction.Text += world.model.direction;
+            //circleCenter.Text += world.model.circlePosition;
+            //direction.Text += world.model.direction;
         }
     }
 

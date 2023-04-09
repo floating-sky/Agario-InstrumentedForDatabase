@@ -1,20 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ClientGUI.MainPage">
+             x:Class="ClientGUI.MainPage"
+             BackgroundColor="Lavender">
 
-    <GraphicsView 
+    <StackLayout>
+        <ScrollView x:Name="WelcomeScreen" IsVisible="True">
+            <VerticalStackLayout Spacing="25" Padding="100" HorizontalOptions="Center" VerticalOptions="Center">
+                <HorizontalStackLayout Spacing="25">
+                    <Label Text="Player Name: " HorizontalOptions="Center"/>
+                    <Entry x:Name="PlayerNameBox" Text="User" HorizontalOptions="Center" WidthRequest="100"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="66">
+                    <Label Text="Server: "/>
+                    <Entry x:Name="ServerNameBox" Text="localhost" WidthRequest="100"/>
+                </HorizontalStackLayout>
+
+                <Button x:Name="ConnectToServerButton" Text="Connect To Server" Clicked="ConnectToServerButtonClicked"/>
+
+                <Label x:Name="DebugMessage" Text="Error messages go here" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        
+        <ScrollView x:Name="GameScreen" IsVisible="False">
+            <GraphicsView 
                 x:Name="PlaySurface"
                 VerticalOptions="Center"
                 BackgroundColor="Blue"
                 HeightRequest="800"
                 WidthRequest="800">
-        <GraphicsView.GestureRecognizers>
-            <PointerGestureRecognizer PointerMoved="PointerChanged"/>
-            <TapGestureRecognizer Tapped="OnTap"/>
-            <PanGestureRecognizer PanUpdated="PanUpdated"/>
-        </GraphicsView.GestureRecognizers>
-    </GraphicsView>
-
-
+                <GraphicsView.GestureRecognizers>
+                    <PointerGestureRecognizer PointerMoved="PointerChanged"/>
+                    <TapGestureRecognizer Tapped="OnTap"/>
+                    <PanGestureRecognizer PanUpdated="PanUpdated"/>
+                </GraphicsView.GestureRecognizers>
+            </GraphicsView>
+        </ScrollView>
+    </StackLayout>
 </ContentPage>

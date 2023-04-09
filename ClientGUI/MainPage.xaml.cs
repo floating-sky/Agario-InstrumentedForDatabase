@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Windows.Networking.Vpn;
 
 namespace ClientGUI
 {
@@ -12,5 +13,22 @@ namespace ClientGUI
             InitializeComponent();
         }
 
+        void ConnectToServerButtonClicked(object sender, EventArgs e) 
+        {
+            WelcomeScreen.IsVisible = false;
+            GameScreen.IsVisible = true;
+        }
+
+        void PointerChanged(object sender, PointerEventArgs e) 
+        {
+
+        }
+
+        void OnTap(object sender, TappedEventArgs args)
+        {
+
+        }
+
+        void PanUpdated(object sender, PanUpdatedEventArgs e) { }
     }
 }

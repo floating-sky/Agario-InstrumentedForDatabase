@@ -11,6 +11,7 @@ namespace TowardAgarioStepOne
         public WorldModel model;
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            canvas.FillColor = Colors.Red;
             canvas.FillCircle(model.circlePosition.X, model.circlePosition.Y, model.circleRadius);
         }
     }
