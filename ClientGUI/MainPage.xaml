@@ -25,18 +25,16 @@
         
         
         <ScrollView x:Name="GameScreen" IsVisible="False">
-            <GraphicsView 
-                x:Name="PlaySurface"
-                VerticalOptions="Center"
-                BackgroundColor="Blue"
-                HeightRequest="800"
-                WidthRequest="800">
-                <GraphicsView.GestureRecognizers>
-                    <PointerGestureRecognizer PointerMoved="PointerChanged"/>
-                    <TapGestureRecognizer Tapped="OnTap"/>
-                    <PanGestureRecognizer PanUpdated="PanUpdated"/>
-                </GraphicsView.GestureRecognizers>
-            </GraphicsView>
+            <VerticalStackLayout> 
+                <GraphicsView x:Name="PlaySurface" VerticalOptions="Center" BackgroundColor="Blue" HeightRequest="800" WidthRequest="800">
+                    <GraphicsView.GestureRecognizers>
+                        <PointerGestureRecognizer PointerMoved="PointerChanged"/>
+                        <TapGestureRecognizer Tapped="OnTap"/>
+                        <PanGestureRecognizer PanUpdated="PanUpdated"/>
+                    </GraphicsView.GestureRecognizers>
+                </GraphicsView>
+                <Label x:Name="PlayDebugMessage" Text="Error messages go here" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
         </ScrollView>
     </StackLayout>
 </ContentPage>
