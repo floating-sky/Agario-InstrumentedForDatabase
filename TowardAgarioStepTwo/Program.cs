@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
+﻿using System.Text.Json;
 namespace TowardAgarioStepTwo
 {
-    internal class Program
+    
+    public class Program
     {
-        static Person person = new Person();
-        string message = JsonSerializer.Serialize<Person>(person);
-        Console.WriteLine(message);
+        static void Main(string[] args) 
+        {
+            Person person = new Student("Julia", 3, 2);
+
+
+            string message = JsonSerializer.Serialize<Person>(person, new JsonSerializerOptions {WriteIndented = true} );
+
+            Console.WriteLine(message);
+            Person temp = JsonSerializer.Deserialize<Person>(message) 
+            ?? throw new Exception("bad json"); ;
+        }
     }
 }

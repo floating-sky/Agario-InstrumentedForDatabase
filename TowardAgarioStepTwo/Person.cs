@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TowardAgarioStepTwo
 {
-    internal class Person
+    [JsonDerivedType(typeof(Person), typeDiscriminator: "Person")]
+    [JsonDerivedType(typeof(Student), typeDiscriminator: "Student")]
+    public class Person
     {
-        internal int ID { get; set; } = 1;
-        public float GPA = 4;
-        private string Name { get; set; } = "Jim";
+        public int ID { get; protected set; } = 1;
+        public string Name { get; protected set; } = "Jim";
+
+
+        [JsonConstructor]
+        public Person(string Name) 
+        {
+            this.Name = Name;
+            this.ID = ID + 1;
+        }
     }
 }
