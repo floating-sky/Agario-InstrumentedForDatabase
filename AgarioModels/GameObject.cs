@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgarioModels
 {
-    internal class GameObject
+    public class GameObject
     {
         public long ID { get; set; }
 

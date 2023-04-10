@@ -19,7 +19,7 @@ namespace FileLogger
         /// <param name="categoryName">The type of message being sent.</param>
         public CustomFileLogger(string categoryName)
         {
-            fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) //TODO: Change to ApplicationData folder before submission
                 + Path.DirectorySeparatorChar
                 + $"CS3500-{categoryName}.log";
 

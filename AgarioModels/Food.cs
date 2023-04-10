@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AgarioModels
 {
     [DebuggerDisplay("Food({X},{Y})")]
-    internal class Food : GameObject
+    public class Food : GameObject
     {
     }
 }
