@@ -9,17 +9,18 @@ namespace AgarioModels
 {
     public class GameObject
     {
-        public long ID { get; set; }
 
-        public float X { get; }
-        public float Y { get; }
-
-        public Vector2 location { get; set; }
+        public float X { get; set; } //TODO: Instructions say not to have setters but serializer wont work without them?
+        public float Y { get; set; }
         
-
         public int ARGBColor { get; set; }
 
+        public long ID { get; set; }
+
         public float Mass { get; set; }
+
+        public Vector2 location { get; set; }
+
 
         public GameObject()
         {
