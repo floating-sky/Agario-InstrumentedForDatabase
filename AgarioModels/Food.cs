@@ -11,6 +11,5 @@ namespace AgarioModels
     //[DebuggerDisplay("Food({X},{Y})")]
     public class Food : GameObject
     {
-        public float radius { get; set; }
     }
 }

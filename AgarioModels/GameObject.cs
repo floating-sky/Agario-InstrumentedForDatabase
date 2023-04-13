@@ -19,6 +19,8 @@ namespace AgarioModels
 
         public float Mass { get; set; }
 
+        public float radius { get; set; }
+
         public Vector2 location { get; set; }
 
 
