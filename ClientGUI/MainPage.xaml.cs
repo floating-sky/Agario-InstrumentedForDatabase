@@ -60,6 +60,13 @@ namespace ClientGUI
         {
             WelcomeScreen.IsVisible = false;
             GameScreen.IsVisible = true;
+
+            InitializeGameLogic();
+        }
+
+        private void InitializeGameLogic()
+        {
+            PlaySurface.Drawable = worldView;
         }
 
         public void OnDisconnect(Networking channel) 
@@ -72,6 +79,7 @@ namespace ClientGUI
             ReceiveFood(message);
             ReceivePlayerID(message);
             ReceiveAllPlayers(message);
+            RecieveHeartbeat(message);
         }
 
         private void ReceiveFood(string message)
@@ -106,12 +114,26 @@ namespace ClientGUI
             }
         }
 
+        private void RecieveHeartbeat(string message)
+        {
+            if (message.StartsWith(AgarioModels.Protocols.CMD_HeartBeat))
+            {
+                int heartBeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
+                //?? throw new Exception("Invalid JSON");
+
+                PlaySurface.Invalidate();
+            }
+        }
+
         /// <summary>
         /// Tracks the movement of the mouse; called with each mouse movement
         /// </summary>
         void PointerChanged(object sender, PointerEventArgs e)
         {
-
+            Point position = (Point)e.GetPosition(this);
+            
+            
+            client.Send(String.Format(Protocols.CMD_Move, position.X, position.Y));
         }
 
         /// <summary>
@@ -139,11 +161,6 @@ namespace ClientGUI
                 initialized = true;
                 InitializeGameLogic();
             }
-        }
-
-        private void InitializeGameLogic()
-        {
-            PlaySurface.Drawable = worldView;
         }
 
 
