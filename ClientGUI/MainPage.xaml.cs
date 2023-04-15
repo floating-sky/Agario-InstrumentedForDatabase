@@ -37,6 +37,7 @@ namespace ClientGUI
         private string serverName;
         private int port;
         Networking client;
+        private Point mousePosition;
 
         public MainPage(ILogger<MainPage> logger) 
         {
@@ -147,7 +148,7 @@ namespace ClientGUI
             {
                 int heartBeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
                 //?? throw new Exception("Invalid JSON");
-
+                client.Send(String.Format(Protocols.CMD_Move, (int)mousePosition.X, (int)mousePosition.Y)); //Convert posX and posY into world coordinates.
                 PlaySurface.Invalidate();
             }
         }
@@ -157,10 +158,7 @@ namespace ClientGUI
         /// </summary>
         void PointerChanged(object sender, PointerEventArgs e)
         {
-            Point position = (Point)e.GetPosition(this);
-            
-            
-            client.Send(String.Format(Protocols.CMD_Move, position.X, position.Y));
+            mousePosition = (Point)e.GetPosition(this);
         }
 
         /// <summary>

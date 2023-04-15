@@ -28,11 +28,18 @@ namespace ClientGUI
     /// </summary>
     internal class WorldDrawable : IDrawable
     {
-
+        //The dimensions of the world we are playing the game in.
         private int worldHeight = 5000;
         private int worldWidth = 5000;
-        private int screenHeight = 3000;
-        private int screenWidth = 3000;
+
+        //The dimensions of the area of the world the player is able to see.
+        private int cameraHeight = 2000; //TODO:Set to some value based on the player's radius.
+        private int cameraWidth = 2000;
+
+        //The dimensions of the player's physical screen.
+        private int screenHeight = 800; //TODO: Set to whatever the current value of the screen.
+        private int screenWidth = 800;
+
         public Dictionary<long, Food> foods { get; set; }
         public long userPlayerID;
         public Dictionary<long, Player> players { get; set; }
@@ -75,6 +82,37 @@ namespace ClientGUI
             return (float)Math.Sqrt(mass / Math.PI);
         }
 
+        private void convert_from_world_to_screen(
+        in float worldX, in float worldY, in float worldW, in float worldH,
+        out int screenX, out int screenY, out int screenW, out int screenH)
+        {
+            //Put the center of the screen wherever the player is.
+            float screenCenterX = players[userPlayerID].X;
+            float screenCenterY = players[userPlayerID].Y;
+
+            //find where the (0,0) coordinate is of our camera view.
+            float cameraLocationX = (float)(screenCenterX - 0.5*cameraWidth);
+            float cameraLocationY = (float)(screenCenterY - 0.5*cameraHeight);
+
+            //find the offset of whatever object we want to draw in relation to the camera.
+            float objectPanX = worldX - cameraLocationX;
+            float objectPanY = worldY - cameraLocationY;
+
+            if (objectPanX <0 || objectPanX > cameraWidth || objectPanY <0 || objectPanY > cameraHeight)
+            {
+                Console.WriteLine("Not drawn");
+            }
+            //divide the objects offset by the camerawidth to get the percentage of the screen
+            //it is taking up then multiply by the dimensions of the users actual screen.
+            screenX =  (int)(objectPanX / cameraWidth * screenWidth);
+            screenY = (int)(objectPanY / cameraWidth * screenWidth);
+
+            //Do the same operation above with the width and the height.
+            screenW = (int)(worldW / cameraWidth * screenWidth);
+            screenH = (int)(worldH / cameraHeight * screenHeight);
+        }
+        
+
         /// <summary>
         /// This code converts between world and screen coordinates.
         ///
@@ -101,14 +139,14 @@ namespace ClientGUI
         /// <param name="screen_w"></param>
         /// <param name="screen_h"></param>
 
-        private void convert_from_world_to_screen(
+        private void convert_from_world_to_screen2(
         in float world_x, in float world_y, in float world_w, in float world_h,
         out int screen_x, out int screen_y, out int screen_w, out int screen_h)
         {
-            screen_x = (int)(world_x / worldWidth * screenWidth);
-            screen_y = (int)(world_y / worldHeight * screenHeight);
-            screen_w = (int)(world_w / worldWidth * screenWidth);
-            screen_h = (int)(world_h / worldHeight * screenHeight);
+            screen_x = (int)(world_x / worldWidth * cameraWidth);
+            screen_y = (int)(world_y / worldHeight * cameraHeight);
+            screen_w = (int)(world_w / worldWidth * cameraWidth);
+            screen_h = (int)(world_h / worldHeight * cameraHeight);
         }
 
 
