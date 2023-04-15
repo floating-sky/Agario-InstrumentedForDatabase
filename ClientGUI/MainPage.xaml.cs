@@ -100,6 +100,8 @@ namespace ClientGUI
             ReceivePlayerID(message);
             ReceiveAllPlayers(message);
             RecieveHeartbeat(message);
+            RecieveFoodEaten(message);
+            RecieveDeadPlayers(message);
         }
 
         private void ReceiveFood(string message)
@@ -109,11 +111,11 @@ namespace ClientGUI
                 AgarioModels.Food[] foodsList = JsonSerializer.Deserialize<Food[]>(message.Replace(AgarioModels.Protocols.CMD_Food, ""))
                 ?? throw new Exception("Invalid JSON");
 
-                Dictionary<long, Food> foods = new Dictionary<long, Food>();
+               
                 foreach (Food food in foodsList)
-                    foods.Add(food.ID, food);
-
-                worldView.foods = foods;
+                {
+                    worldView.foods.Add(food.ID, food);
+                }  
             }
         }
 
@@ -156,6 +158,33 @@ namespace ClientGUI
             }
         }
 
+        private void RecieveFoodEaten(string message)
+        {
+            if (message.StartsWith(AgarioModels.Protocols.CMD_Eaten_Food))
+            {
+                List<long> foodsEaten = JsonSerializer.Deserialize<List<long>>(message.Replace(AgarioModels.Protocols.CMD_Eaten_Food, ""));
+
+                foreach (long foodID in foodsEaten)
+                {
+                    worldView.foods.Remove(foodID);
+                }
+            }
+            
+        }
+
+        private void RecieveDeadPlayers(string message)
+        {
+            if (message.StartsWith(AgarioModels.Protocols.CMD_Dead_Players))
+            {
+                int[] deadPlayers = JsonSerializer.Deserialize<int[]>(message.Replace(AgarioModels.Protocols.CMD_Dead_Players, ""));
+
+                foreach (long playerID in deadPlayers)
+                {
+                    worldView.foods.Remove(playerID);
+                }
+            }
+
+        }
         /// <summary>
         /// Tracks the movement of the mouse; called with each mouse movement
         /// </summary>

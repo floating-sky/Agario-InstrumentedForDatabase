@@ -40,7 +40,7 @@ namespace ClientGUI
         private int screenHeight = 800; //TODO: Set to whatever the current value of the screen.
         private int screenWidth = 800;
 
-        public Dictionary<long, Food> foods { get; set; }
+        public Dictionary<long, Food> foods { get; set; } = new Dictionary<long, Food>();
         public long userPlayerID;
         public Dictionary<long, Player> players { get; set; }
 
