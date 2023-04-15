@@ -60,7 +60,7 @@
 
 	<ItemGroup>
 	  <Reference Include="Communications">
-	    <HintPath>..\..\Lab11-Storyteller\Library\Communications.dll</HintPath>
+	    <HintPath>..\..\Agario\libs\Communications.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
