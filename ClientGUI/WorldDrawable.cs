@@ -33,7 +33,7 @@ namespace ClientGUI
         private int worldWidth = 5000;
 
         //The dimensions of the area of the world the player is able to see.
-        private int cameraHeight = 2000; //TODO:Set to some value based on the player's radius.
+        private int cameraHeight = 2000; 
         private int cameraWidth = 2000;
 
         //The dimensions of the player's physical screen.
@@ -46,6 +46,9 @@ namespace ClientGUI
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            cameraWidth = (int)(30*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
+            cameraHeight = (int)(30*calculateRadius(players[userPlayerID].Mass));
+
             canvas.FillColor = Colors.Gray;
             canvas.FillRectangle(dirtyRect);
 
@@ -98,11 +101,7 @@ namespace ClientGUI
             float objectPanX = worldX - cameraLocationX;
             float objectPanY = worldY - cameraLocationY;
 
-            if (objectPanX <0 || objectPanX > cameraWidth || objectPanY <0 || objectPanY > cameraHeight)
-            {
-                Console.WriteLine("Not drawn");
-            }
-            //divide the objects offset by the camerawidth to get the percentage of the screen
+            //divide the objects offset by the camera width to get the percentage of the screen
             //it is taking up then multiply by the dimensions of the users actual screen.
             screenX =  (int)(objectPanX / cameraWidth * screenWidth);
             screenY = (int)(objectPanY / cameraWidth * screenWidth);
@@ -111,44 +110,33 @@ namespace ClientGUI
             screenW = (int)(worldW / cameraWidth * screenWidth);
             screenH = (int)(worldH / cameraHeight * screenHeight);
         }
-        
 
-        /// <summary>
-        /// This code converts between world and screen coordinates.
-        ///
-        /// Assumption: The world is 3000 wide and 2000 high. WARNING: never use magic numbers like these in
-        /// your code. Always replaced by named constants that "live" somewhere appropriate.
-        ///
-        /// Assumption: we are drawing across the entire GUI window. WARNING: you probably will not do this
-        /// in your program... leave room for some info displays.
-        ///
-        /// Assumption: We are drawing the entire world on the GUI window. WARNING: you will need to "shrink"
-        /// the area of the "world" that is shown. Think about how to do this and ask questions
-        /// in lecture.
-        ///
-        /// Algorithm: See Lab Writeup
-        ///
-        /// Notice: You should be able to explain why the world is in floats and the screen is in ints!
-        /// </summary>
-        /// <param name="world_x"></param>
-        /// <param name="world_y"></param>
-        /// <param name="world_w"></param>
-        /// <param name="world_h"></param>
-        /// <param name="screen_x"></param>
-        /// <param name="screen_y"></param>
-        /// <param name="screen_w"></param>
-        /// <param name="screen_h"></param>
-
-        private void convert_from_world_to_screen2(
-        in float world_x, in float world_y, in float world_w, in float world_h,
-        out int screen_x, out int screen_y, out int screen_w, out int screen_h)
+        public void convert_from_screen_to_world(in float screenX, in float screenY, out int worldX, out int worldY)
         {
-            screen_x = (int)(world_x / worldWidth * cameraWidth);
-            screen_y = (int)(world_y / worldHeight * cameraHeight);
-            screen_w = (int)(world_w / worldWidth * cameraWidth);
-            screen_h = (int)(world_h / worldHeight * cameraHeight);
+            //If the player is not found, just return zeroes.
+            if (userPlayerID == 0)
+            {
+                worldX = 0;
+                worldY = 0;
+                return;
+            }
+
+            //Gives the amount of pixels from the camera's (0,0) our object is at.
+            float objectOffsetX = screenX / screenWidth * cameraWidth;
+            float objectOffsetY = screenY / screenHeight * cameraHeight;
+
+            //Put the center of the screen wherever the player is.
+            float screenCenterX = players[userPlayerID].X;
+            float screenCenterY = players[userPlayerID].Y;
+
+            //find where the (0,0) coordinate is of our camera view.
+            float cameraLocationX = (float)(screenCenterX - 0.5 * cameraWidth);
+            float cameraLocationY = (float)(screenCenterY - 0.5 * cameraHeight);
+
+            //Add the object's offset to the (0,0) of our camera.
+            worldX = (int)(objectOffsetX + cameraLocationX);
+            worldY = (int)(objectOffsetY + cameraLocationY);
+
         }
-
-
     }
 }

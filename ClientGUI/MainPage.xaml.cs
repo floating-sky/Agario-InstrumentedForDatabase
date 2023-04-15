@@ -148,7 +148,10 @@ namespace ClientGUI
             {
                 int heartBeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
                 //?? throw new Exception("Invalid JSON");
-                client.Send(String.Format(Protocols.CMD_Move, (int)mousePosition.X, (int)mousePosition.Y)); //Convert posX and posY into world coordinates.
+
+                worldView.convert_from_screen_to_world((float)mousePosition.X, (float)mousePosition.Y, out int worldMouseX, out int worldMouseY);
+
+                client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
                 PlaySurface.Invalidate();
             }
         }
@@ -187,7 +190,6 @@ namespace ClientGUI
                 InitializeGameLogic();
             }
         }
-
 
 
     }
