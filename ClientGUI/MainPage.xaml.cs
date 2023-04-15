@@ -86,8 +86,12 @@ namespace ClientGUI
         {
             if (message.StartsWith(AgarioModels.Protocols.CMD_Food))
             {
-                AgarioModels.Food[] foods = JsonSerializer.Deserialize<Food[]>(message.Replace(AgarioModels.Protocols.CMD_Food, ""))
+                AgarioModels.Food[] foodsList = JsonSerializer.Deserialize<Food[]>(message.Replace(AgarioModels.Protocols.CMD_Food, ""))
                 ?? throw new Exception("Invalid JSON");
+
+                Dictionary<long, Food> foods = new Dictionary<long, Food>();
+                foreach (Food food in foodsList)
+                    foods.Add(food.ID, food);
 
                 worldView.foods = foods;
             }
@@ -107,8 +111,12 @@ namespace ClientGUI
         {
             if (message.StartsWith(AgarioModels.Protocols.CMD_Update_Players)) 
             {
-                AgarioModels.Player[] players = JsonSerializer.Deserialize<Player[]>(message.Replace(AgarioModels.Protocols.CMD_Update_Players, ""))
+                AgarioModels.Player[] playersList = JsonSerializer.Deserialize<Player[]>(message.Replace(AgarioModels.Protocols.CMD_Update_Players, ""))
                 ?? throw new Exception("Invalid JSON");
+
+                Dictionary<long, Player> players = new Dictionary<long, Player>();
+                foreach (Player player in playersList)
+                    players.Add(player.ID, player);
 
                 worldView.players = players;
             }

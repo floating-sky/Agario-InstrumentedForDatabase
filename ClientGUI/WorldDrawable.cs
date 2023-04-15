@@ -16,16 +16,16 @@ namespace ClientGUI
         private int worldWidth = 5000;
         private int screenHeight = 3000;
         private int screenWidth = 3000;
-        public Food[] foods { get; set; }
+        public Dictionary<long, Food> foods { get; set; }
         public long userPlayerID;
-        public Player[] players { get; set; }
+        public Dictionary<long, Player> players { get; set; }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             canvas.FillColor = Colors.Gray;
             canvas.FillRectangle(dirtyRect);
 
-            foreach (Food food in foods) 
+            foreach (Food food in foods.Values) 
             {
                 canvas.FillColor = Color.FromInt(food.ARGBColor);
                 food.radius = calculateRadius(food.Mass); // radius = square root of area / pi
@@ -39,7 +39,7 @@ namespace ClientGUI
 
             if (players is not null)
             {
-                foreach (Player player in players)
+                foreach (Player player in players.Values)
                 {
                     canvas.FillColor = Color.FromInt(player.ARGBColor);
                     player.radius = calculateRadius(player.Mass);
