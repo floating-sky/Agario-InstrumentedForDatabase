@@ -7,6 +7,25 @@ using System.Text.Json;
 using Windows.Graphics.Printing3D;
 using Windows.Networking.Vpn;
 
+/// <summary>
+/// Author:    Julia Thomas
+/// Partner:   C Wyatt Bruchhauser
+/// Date:      4-16-2022
+/// Course:    CS 3500, University of Utah, School of Computing
+/// Copyright: CS 3500 and C Wyatt Bruchhauser - This work may not 
+///            be copied for use in Academic Coursework.
+///
+/// I, C Wyatt Bruchhauser and Julia Thomas, certify that I wrote this code from scratch and
+/// did not copy it in part or whole from another source.  All 
+/// references used in the completion of the assignments are cited 
+/// in my README file.
+///
+/// File Contents
+///    This class represents the GUI that our client will see when they start up the game. There are two pages,
+///    the first is our welcome page where the user will be able to set their name and connect to their server.
+///    The second is the game screen where players will be able to play the game. The screens are toggled
+///    on and off using the isVisible property.
+/// </summary>
 namespace ClientGUI
 {
     public partial class MainPage : ContentPage

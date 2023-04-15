@@ -9,6 +9,23 @@ using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace ClientGUI
 {
+    /// <summary>
+    /// Author:    Julia Thomas
+    /// Partner:   C Wyatt Bruchhauser
+    /// Date:      4-16-2022
+    /// Course:    CS 3500, University of Utah, School of Computing
+    /// Copyright: CS 3500 and C Wyatt Bruchhauser - This work may not 
+    ///            be copied for use in Academic Coursework.
+    ///
+    /// I, C Wyatt Bruchhauser and Julia Thomas, certify that I wrote this code from scratch and
+    /// did not copy it in part or whole from another source.  All 
+    /// references used in the completion of the assignments are cited 
+    /// in my README file.
+    ///
+    /// File Contents
+    /// This file represents the view of the world the player will see. The player will always be at the center of the screen
+    /// and as they gain more mass the camera will pan out more and more to let the see the world better.
+    /// </summary>
     internal class WorldDrawable : IDrawable
     {
 
