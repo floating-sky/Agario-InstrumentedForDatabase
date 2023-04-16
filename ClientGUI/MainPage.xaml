@@ -34,6 +34,7 @@
                     </GraphicsView.GestureRecognizers>
                 </GraphicsView>
                 <Label x:Name="PlayDebugMessage" Text="Error messages go here" HorizontalOptions="Center"/>
+                <Label x:Name="GameStatistics" Text="Statistics" HorizontalOptions="Center"/>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>

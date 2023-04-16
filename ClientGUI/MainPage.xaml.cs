@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
 using Windows.Graphics.Printing3D;
+using Windows.Media.Streaming.Adaptive;
 using Windows.Networking.Vpn;
 
 /// <summary>
@@ -118,7 +119,7 @@ namespace ClientGUI
                 }  
             }
         }
-
+        
         private void ReceivePlayerID(string message)
         {
             if (message.StartsWith(AgarioModels.Protocols.CMD_Player_Object))
@@ -152,13 +153,15 @@ namespace ClientGUI
                 //?? throw new Exception("Invalid JSON");
 
                 worldView.convert_from_screen_to_world((float)(mousePosition.X -graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
+                
+                if (worldView.userPlayerID != 0)
+                {
+                    GameStatistics.Text = $"Mass: {worldView.players[worldView.userPlayerID].Mass}\nCoordinates: {(int)worldView.players[worldView.userPlayerID].X}, {(int)worldView.players[worldView.userPlayerID].Y}\nMouse Position: {(int)(mousePosition.X - graphicsViewTopLeft.X)}, {(int)(mousePosition.Y - graphicsViewTopLeft.Y)}";
+                }
 
-                
-                if (worldView.userPlayerID != 0) //DEBUG
-                PlayDebugMessage.Text = $"mouse {mousePosition.X - graphicsViewTopLeft.X} , {mousePosition.X - graphicsViewTopLeft.Y} \nworld {worldMouseX} , {worldMouseY} \nrelative {worldView.players[worldView.userPlayerID].X - worldMouseX} , {worldView.players[worldView.userPlayerID].Y - worldMouseY}";
-                
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
                 PlaySurface.Invalidate();
+
             }
         }
 
@@ -184,11 +187,32 @@ namespace ClientGUI
 
                 foreach (long playerID in deadPlayers)
                 {
-                    worldView.foods.Remove(playerID);
+                   
+                    if (worldView.userPlayerID == playerID)
+                    {
+                        deathMessage();
+                    }
+                    worldView.players.Remove(playerID);
                 }
+
+                
             }
 
         }
+
+        private async void deathMessage()
+        {
+            bool keepPlaying = await DisplayAlert("You died!", $"Final Mass: {worldView.players[worldView.userPlayerID].Mass}", "Restart Game", "Quit");
+            if (keepPlaying)
+            {
+                client.Send(String.Format(Protocols.CMD_Start_Game, userName));
+            }
+            else
+            {
+                Application.Current?.CloseWindow(Application.Current.MainPage.Window);
+            }
+        }
+
         /// <summary>
         /// Tracks the movement of the mouse; called with each mouse movement
         /// </summary>

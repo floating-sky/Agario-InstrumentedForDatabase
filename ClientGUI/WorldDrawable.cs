@@ -49,6 +49,7 @@ namespace ClientGUI
             cameraWidth = (int)(30*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
             cameraHeight = (int)(30*calculateRadius(players[userPlayerID].Mass));
 
+
             canvas.FillColor = Colors.Gray;
             canvas.FillRectangle(dirtyRect);
 
@@ -75,8 +76,15 @@ namespace ClientGUI
                     //The radius is half the width of a circle.
                     int radius = width / 2;
                     canvas.FillCircle(screen_X, screen_Y, radius);
+
+                    canvas.FontColor = Colors.White;
+                    canvas.FontSize = 14;
+                    canvas.DrawString(player.Name, screen_X, screen_Y, HorizontalAlignment.Center);
+
                 }
             }
+
+            
             
         }
 
