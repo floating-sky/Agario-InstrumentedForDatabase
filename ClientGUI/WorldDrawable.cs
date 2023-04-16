@@ -46,8 +46,9 @@ namespace ClientGUI
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            cameraWidth = (int)(30*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
-            cameraHeight = (int)(30*calculateRadius(players[userPlayerID].Mass));
+            //Change back to 30
+            cameraWidth = (int)(120*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
+            cameraHeight = (int)(120*calculateRadius(players[userPlayerID].Mass));
 
 
             canvas.FillColor = Colors.Gray;
@@ -122,7 +123,7 @@ namespace ClientGUI
         public void convert_from_screen_to_world(in float screenX, in float screenY, out int worldX, out int worldY)
         {
             //If the player is not found, just return zeroes.
-            if (userPlayerID == 0)
+            if (userPlayerID == 0 || !players.ContainsKey(userPlayerID))
             {
                 worldX = 0;
                 worldY = 0;

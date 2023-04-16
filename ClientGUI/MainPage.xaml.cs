@@ -97,12 +97,12 @@ namespace ClientGUI
 
         public void OnMessage(Networking channel, string message) 
         {
-            ReceiveFood(message);
+            RecieveDeadPlayers(message);
             ReceivePlayerID(message);
             ReceiveAllPlayers(message);
             RecieveHeartbeat(message);
-            RecieveFoodEaten(message);
-            RecieveDeadPlayers(message);
+            ReceiveFood(message);
+            RecieveFoodEaten(message); 
         }
 
         private void ReceiveFood(string message)
@@ -154,13 +154,18 @@ namespace ClientGUI
 
                 worldView.convert_from_screen_to_world((float)(mousePosition.X -graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
                 
-                if (worldView.userPlayerID != 0)
+                if (worldView.userPlayerID != 0 && worldView.players.ContainsKey(worldView.userPlayerID))
                 {
                     GameStatistics.Text = $"Mass: {worldView.players[worldView.userPlayerID].Mass}\nCoordinates: {(int)worldView.players[worldView.userPlayerID].X}, {(int)worldView.players[worldView.userPlayerID].Y}\nMouse Position: {(int)(mousePosition.X - graphicsViewTopLeft.X)}, {(int)(mousePosition.Y - graphicsViewTopLeft.Y)}";
                 }
 
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
-                PlaySurface.Invalidate();
+
+                if (worldView.userPlayerID != 0 && worldView.players.ContainsKey(worldView.userPlayerID))
+                {
+                    PlaySurface.Invalidate();
+                }
+               
 
             }
         }
