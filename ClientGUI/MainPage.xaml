@@ -3,38 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ClientGUI.MainPage"
              BackgroundColor="Lavender">
+    <ScrollView>
+        <StackLayout>
+            <ScrollView x:Name="WelcomeScreen" IsVisible="True">
+                <VerticalStackLayout Spacing="25" Padding="100" HorizontalOptions="Center" VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="25">
+                        <Label Text="Player Name: " HorizontalOptions="Center"/>
+                        <Entry x:Name="PlayerNameBox" Text="User" HorizontalOptions="Center" WidthRequest="100" Completed="PlayerNameBoxChanged"/>
+                    </HorizontalStackLayout>
 
-    <StackLayout>
-        <ScrollView x:Name="WelcomeScreen" IsVisible="True">
-            <VerticalStackLayout Spacing="25" Padding="100" HorizontalOptions="Center" VerticalOptions="Center">
-                <HorizontalStackLayout Spacing="25">
-                    <Label Text="Player Name: " HorizontalOptions="Center"/>
-                    <Entry x:Name="PlayerNameBox" Text="User" HorizontalOptions="Center" WidthRequest="100" Completed="PlayerNameBoxChanged"/>
-                </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="66">
+                        <Label Text="Server: "/>
+                        <Entry x:Name="ServerNameBox" Text="localhost" WidthRequest="100" Completed="ServerNameBoxChanged"/>
+                    </HorizontalStackLayout>
 
-                <HorizontalStackLayout Spacing="66">
-                    <Label Text="Server: "/>
-                    <Entry x:Name="ServerNameBox" Text="localhost" WidthRequest="100" Completed="ServerNameBoxChanged"/>
-                </HorizontalStackLayout>
+                    <Button x:Name="ConnectToServerButton" Text="Connect To Server" Clicked="ConnectToServerButtonClicked"/>
 
-                <Button x:Name="ConnectToServerButton" Text="Connect To Server" Clicked="ConnectToServerButtonClicked"/>
+                    <Label x:Name="DebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
+                </VerticalStackLayout>
+            </ScrollView>
 
-                <Label x:Name="DebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
-            </VerticalStackLayout>
-        </ScrollView>
-        
-        
-        <ScrollView x:Name="GameScreen" IsVisible="False">
-            <VerticalStackLayout>
-                <GraphicsView x:Name="PlaySurface" VerticalOptions="Center" BackgroundColor="Blue" HeightRequest="800" WidthRequest="800">
-                    <GraphicsView.GestureRecognizers>
-                        <PointerGestureRecognizer PointerMoved="PointerChanged"/>
-                    </GraphicsView.GestureRecognizers>
-                </GraphicsView>
-                <Button x:Name="SplitButton" Text="Split" Clicked="SplitButton_Clicked" WidthRequest="300"/>
-                <Label x:Name="GameStatistics" Text="Statistics" HorizontalOptions="Center"/>
-                <Label x:Name="PlayDebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
-            </VerticalStackLayout>
-        </ScrollView>
-    </StackLayout>
+            <ScrollView x:Name="GameScreen" IsVisible="False">
+                <VerticalStackLayout>
+                    <GraphicsView x:Name="PlaySurface" VerticalOptions="Center" BackgroundColor="Blue" HeightRequest="800" WidthRequest="800">
+                        <GraphicsView.GestureRecognizers>
+                            <PointerGestureRecognizer PointerMoved="PointerChanged"/>
+                        </GraphicsView.GestureRecognizers>
+                    </GraphicsView>
+                    <Button x:Name="SplitButton" Text="Split" Clicked="SplitButtonClicked" WidthRequest="250"/>
+                    <Label x:Name="GameStatistics" Text="Statistics" HorizontalOptions="Center"/>
+                    <Label x:Name="PlayDebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

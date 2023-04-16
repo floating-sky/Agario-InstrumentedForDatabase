@@ -82,11 +82,6 @@ namespace ClientGUI
             WelcomeScreen.IsVisible = false;
             GameScreen.IsVisible = true;
 
-            InitializeGameLogic();
-        }
-
-        private void InitializeGameLogic()
-        {
             PlaySurface.Drawable = worldView;
         }
 
@@ -160,16 +155,12 @@ namespace ClientGUI
                         $"\nCoordinates: {(int)worldView.players[worldView.userPlayerID].X}, {(int)worldView.players[worldView.userPlayerID].Y}" +
                         $"\nMouse Position: {(int)(mousePosition.X - graphicsViewTopLeft.X)}, {(int)(mousePosition.Y - graphicsViewTopLeft.Y)}" +
                         $"\nHeartbeat: {heartbeatCount}";
+
+                    PlaySurface.Invalidate();
                 }
 
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
-
-                if (worldView.userPlayerID != 0 && worldView.players.ContainsKey(worldView.userPlayerID))
-                {
-                    PlaySurface.Invalidate();
-                }
-               
-
+                SplitButton.Focus();
             }
         }
 
@@ -198,14 +189,14 @@ namespace ClientGUI
                    
                     if (worldView.userPlayerID == playerID)
                     {
-                        deathMessage();
+                        DeathMessage();
                     }
                     worldView.players.Remove(playerID);
                 }
             }
         }
 
-        private async void deathMessage()
+        private async void DeathMessage()
         {
             bool keepPlaying = await DisplayAlert("You died!", $"Final Mass: {worldView.players[worldView.userPlayerID].Mass}", "Restart Game", "Quit");
             if (keepPlaying)
@@ -226,22 +217,10 @@ namespace ClientGUI
             mousePosition = (Point)e.GetPosition(this);
         }
 
-        private void SplitButton_Clicked(object sender, EventArgs e)
+        private void SplitButtonClicked(object sender, EventArgs e)
         {
             worldView.convert_from_screen_to_world((float)(mousePosition.X - graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
             client.Send(String.Format(Protocols.CMD_Split, (int)(worldMouseX), (int)(worldMouseY)));
-        }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            Debug.WriteLine($"OnSizeAllocated {width} {height}");
-
-            if (!initialized)
-            {
-                initialized = true;
-                InitializeGameLogic();
-            }
         }
     }
 }
