@@ -69,17 +69,21 @@ namespace ClientGUI
             {
                 foreach (Player player in players.Values)
                 {
-                    canvas.FillColor = Color.FromInt(player.ARGBColor);
                     player.radius = calculateRadius(player.Mass);
                     //In order to get the width and height of a circle, you must multiply the radius by 2.
                     convert_from_world_to_screen(player.X, player.Y, player.radius * 2, player.radius * 2, out int screen_X, out int screen_Y, out int width, out int height);
                     //The radius is half the width of a circle.
                     int radius = width / 2;
-                    canvas.FillCircle(screen_X, screen_Y, radius);
 
+                    canvas.StrokeColor = Colors.Black;
+                    canvas.StrokeSize = 4;
+                    canvas.DrawCircle(screen_X, screen_Y, radius);
+                    canvas.FillColor = Color.FromInt(player.ARGBColor);
+                    canvas.FillCircle(screen_X, screen_Y, radius);
+                    
                     canvas.FontColor = Colors.Black;
                     canvas.FontSize = 15;
-                    canvas.DrawString(player.Name, screen_X, screen_Y - radius - 5, HorizontalAlignment.Center);
+                    canvas.DrawString(player.Name, screen_X, screen_Y - radius - 8, HorizontalAlignment.Center);
                 }
             }
         }
