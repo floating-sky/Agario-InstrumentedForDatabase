@@ -28,10 +28,6 @@ namespace ClientGUI
     /// </summary>
     internal class WorldDrawable : IDrawable
     {
-        //The dimensions of the world we are playing the game in.
-        private int worldHeight = 5000;
-        private int worldWidth = 5000;
-
         //The dimensions of the area of the world the player is able to see.
         private int cameraHeight = 2000; 
         private int cameraWidth = 2000;
@@ -46,12 +42,15 @@ namespace ClientGUI
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            //Change back to 30
-            cameraWidth = (int)(120*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
-            cameraHeight = (int)(120*calculateRadius(players[userPlayerID].Mass));
+            if (userPlayerID == 0) 
+            {
+                return;
+            }
 
+            cameraWidth = (int)(30*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
+            cameraHeight = (int)(30*calculateRadius(players[userPlayerID].Mass));
 
-            canvas.FillColor = Colors.Gray;
+            canvas.FillColor = Colors.LightGray;
             canvas.FillRectangle(dirtyRect);
 
             foreach (Food food in foods.Values) 
@@ -78,15 +77,11 @@ namespace ClientGUI
                     int radius = width / 2;
                     canvas.FillCircle(screen_X, screen_Y, radius);
 
-                    canvas.FontColor = Colors.White;
-                    canvas.FontSize = 14;
-                    canvas.DrawString(player.Name, screen_X, screen_Y, HorizontalAlignment.Center);
-
+                    canvas.FontColor = Colors.Black;
+                    canvas.FontSize = 15;
+                    canvas.DrawString(player.Name, screen_X, screen_Y - radius - 5, HorizontalAlignment.Center);
                 }
             }
-
-            
-            
         }
 
         public float calculateRadius(float mass) 

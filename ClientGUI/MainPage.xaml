@@ -19,22 +19,21 @@
 
                 <Button x:Name="ConnectToServerButton" Text="Connect To Server" Clicked="ConnectToServerButtonClicked"/>
 
-                <Label x:Name="DebugMessage" Text="Error messages go here" HorizontalOptions="Center" />
+                <Label x:Name="DebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
             </VerticalStackLayout>
         </ScrollView>
         
         
         <ScrollView x:Name="GameScreen" IsVisible="False">
-            <VerticalStackLayout> 
+            <VerticalStackLayout>
                 <GraphicsView x:Name="PlaySurface" VerticalOptions="Center" BackgroundColor="Blue" HeightRequest="800" WidthRequest="800">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>
-                        <TapGestureRecognizer Tapped="OnTap"/>
-                        <PanGestureRecognizer PanUpdated="PanUpdated"/>
                     </GraphicsView.GestureRecognizers>
                 </GraphicsView>
-                <Label x:Name="PlayDebugMessage" Text="Error messages go here" HorizontalOptions="Center"/>
+                <Button x:Name="SplitButton" Text="Split" Clicked="SplitButton_Clicked" WidthRequest="300"/>
                 <Label x:Name="GameStatistics" Text="Statistics" HorizontalOptions="Center"/>
+                <Label x:Name="PlayDebugMessage" Text="" HorizontalOptions="Center" TextColor="Red"/>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>

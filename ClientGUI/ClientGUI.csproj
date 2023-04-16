@@ -60,7 +60,7 @@
 
 	<ItemGroup>
 	  <Reference Include="Communications">
-	    <HintPath>..\..\assignment8agario-julia-and-wyatt\libs\Communications.dll</HintPath>
+	    <HintPath>..\..\Agario\libs\Communications.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 	<!--C:\Users\wyatt\source\repos\uofu-cs3500-spring23\assignment8agario-julia-and-wyatt-->

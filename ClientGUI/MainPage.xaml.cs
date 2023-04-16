@@ -92,7 +92,7 @@ namespace ClientGUI
 
         public void OnDisconnect(Networking channel) 
         {
-        
+            PlayDebugMessage.Text = "Player disconnected from server";
         }
 
         public void OnMessage(Networking channel, string message) 
@@ -149,14 +149,17 @@ namespace ClientGUI
         {
             if (message.StartsWith(AgarioModels.Protocols.CMD_HeartBeat))
             {
-                int heartBeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
+                int heartbeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
                 //?? throw new Exception("Invalid JSON");
 
                 worldView.convert_from_screen_to_world((float)(mousePosition.X -graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
                 
                 if (worldView.userPlayerID != 0 && worldView.players.ContainsKey(worldView.userPlayerID))
                 {
-                    GameStatistics.Text = $"Mass: {worldView.players[worldView.userPlayerID].Mass}\nCoordinates: {(int)worldView.players[worldView.userPlayerID].X}, {(int)worldView.players[worldView.userPlayerID].Y}\nMouse Position: {(int)(mousePosition.X - graphicsViewTopLeft.X)}, {(int)(mousePosition.Y - graphicsViewTopLeft.Y)}";
+                    GameStatistics.Text = $"Mass: {worldView.players[worldView.userPlayerID].Mass}" +
+                        $"\nCoordinates: {(int)worldView.players[worldView.userPlayerID].X}, {(int)worldView.players[worldView.userPlayerID].Y}" +
+                        $"\nMouse Position: {(int)(mousePosition.X - graphicsViewTopLeft.X)}, {(int)(mousePosition.Y - graphicsViewTopLeft.Y)}" +
+                        $"\nHeartbeat: {heartbeatCount}";
                 }
 
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
@@ -226,19 +229,9 @@ namespace ClientGUI
             mousePosition = (Point)e.GetPosition(this);
         }
 
-        /// <summary>
-        /// Runs when mouse2 is pressed on phone screen is tapped
-        /// </summary>
-        void OnTap(object sender, TappedEventArgs args)
+        private void SplitButton_Clicked(object sender, EventArgs e)
         {
-        }
-
-        /// <summary>
-        /// Called when phone user moves finger across screen (not needed)
-        /// </summary>
-        void PanUpdated(object sender, PanUpdatedEventArgs e) 
-        { 
-            //TODO: Remove if not useful
+            client.Send(String.Format(Protocols.CMD_Split, (int)(mousePosition.X - graphicsViewTopLeft.X), (int)(mousePosition.Y - graphicsViewTopLeft.Y)));
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -252,7 +245,5 @@ namespace ClientGUI
                 InitializeGameLogic();
             }
         }
-
-
     }
 }
