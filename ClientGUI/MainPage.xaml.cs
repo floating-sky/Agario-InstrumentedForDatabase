@@ -151,8 +151,12 @@ namespace ClientGUI
                 int heartBeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
                 //?? throw new Exception("Invalid JSON");
 
-                worldView.convert_from_screen_to_world((float)mousePosition.X, (float)mousePosition.Y, out int worldMouseX, out int worldMouseY);
+                worldView.convert_from_screen_to_world((float)mousePosition.X -560, (float)mousePosition.Y, out int worldMouseX, out int worldMouseY);
 
+                
+                if (worldView.userPlayerID != 0) //DEBUG
+                PlayDebugMessage.Text = $"mouse {mousePosition.X -560} , {mousePosition.Y} \nworld {worldMouseX} , {worldMouseY} \nrelative {worldView.players[worldView.userPlayerID].X - worldMouseX} , {worldView.players[worldView.userPlayerID].Y - worldMouseY}";
+                
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
                 PlaySurface.Invalidate();
             }
