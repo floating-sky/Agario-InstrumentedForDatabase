@@ -29,7 +29,7 @@ namespace ClientGUI
     internal class WorldDrawable : IDrawable
     {
         //The dimensions of the area of the world the player is able to see.
-        private int cameraHeight = 2000; 
+        private int cameraHeight = 2000;
         private int cameraWidth = 2000;
 
         //The dimensions of the player's physical screen.
@@ -46,27 +46,27 @@ namespace ClientGUI
         /// </summary>
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            if (userPlayerID == 0) 
+            if (userPlayerID == 0)
             {
                 return;
             }
 
-            cameraWidth = (int)(30*calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
-            cameraHeight = (int)(30*calculateRadius(players[userPlayerID].Mass));
+            cameraWidth = (int)(30 * calculateRadius(players[userPlayerID].Mass)); //Adjust the camera to relate to the size of the player as the game continues.
+            cameraHeight = (int)(30 * calculateRadius(players[userPlayerID].Mass));
 
             canvas.FillColor = Colors.LightGray;
             canvas.FillRectangle(dirtyRect);
 
-            foreach (Food food in foods.Values) 
+            foreach (Food food in foods.Values)
             {
                 canvas.FillColor = Color.FromInt(food.ARGBColor);
                 food.radius = calculateRadius(food.Mass); // radius = square root of area / pi
 
                 //In order to get the width and height of a circle, you must multiply the radius by 2.
-                convert_from_world_to_screen(food.X, food.Y, food.radius*2, food.radius*2, out int screen_X, out int screen_Y, out int width, out int height);
+                convert_from_world_to_screen(food.X, food.Y, food.radius * 2, food.radius * 2, out int screen_X, out int screen_Y, out int width, out int height);
                 //The radius is half the width of a circle.
                 int radius = width / 2;
-                canvas.FillCircle(screen_X, screen_Y, radius); 
+                canvas.FillCircle(screen_X, screen_Y, radius);
             }
 
             if (players is not null)
@@ -84,7 +84,7 @@ namespace ClientGUI
                     canvas.DrawCircle(screen_X, screen_Y, radius);
                     canvas.FillColor = Color.FromInt(player.ARGBColor);
                     canvas.FillCircle(screen_X, screen_Y, radius);
-                    
+
                     canvas.FontColor = Colors.Black;
                     canvas.FontSize = 15;
                     canvas.DrawString(player.Name, screen_X, screen_Y - radius - 8, HorizontalAlignment.Center);
@@ -97,7 +97,7 @@ namespace ClientGUI
         /// </summary>
         /// <param name="mass">mass that needs to be converted</param>
         /// <returns>radius based off of the given mass</returns>
-        public float calculateRadius(float mass) 
+        public float calculateRadius(float mass)
         {
             return (float)Math.Sqrt(mass / Math.PI);
         }
@@ -123,8 +123,8 @@ namespace ClientGUI
             float screenCenterY = players[userPlayerID].Y;
 
             //find where the (0,0) coordinate is of our camera view.
-            float cameraLocationX = (float)(screenCenterX - 0.5*cameraWidth);
-            float cameraLocationY = (float)(screenCenterY - 0.5*cameraHeight);
+            float cameraLocationX = (float)(screenCenterX - 0.5 * cameraWidth);
+            float cameraLocationY = (float)(screenCenterY - 0.5 * cameraHeight);
 
             //find the offset of whatever object we want to draw in relation to the camera.
             float objectPanX = worldX - cameraLocationX;
@@ -132,7 +132,7 @@ namespace ClientGUI
 
             //divide the objects offset by the camera width to get the percentage of the screen
             //it is taking up then multiply by the dimensions of the users actual screen.
-            screenX =  (int)(objectPanX / cameraWidth * screenWidth);
+            screenX = (int)(objectPanX / cameraWidth * screenWidth);
             screenY = (int)(objectPanY / cameraWidth * screenWidth);
 
             //Do the same operation above with the width and the height.

@@ -39,7 +39,7 @@ namespace ClientGUI
         Networking client;
         private Point mousePosition;
         private Point graphicsViewTopLeft; //Stores the relative coordinates of the graphics view at (0,0)
-        public MainPage(ILogger<MainPage> logger) 
+        public MainPage(ILogger<MainPage> logger)
         {
             _logger = logger;
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace ClientGUI
             userName = PlayerNameBox.Text;
             serverName = ServerNameBox.Text;
             port = 11000;
-            graphicsViewTopLeft = new Point(560,0);
+            graphicsViewTopLeft = new Point(560, 0);
         }
 
         /// <summary>
@@ -70,13 +70,16 @@ namespace ClientGUI
         /// When the connect to server connect button is clicked, this method tries to connect the client to the server,
         /// await messages from the server, and sends a message to the server that the game has started.
         /// </summary>
-        void ConnectToServerButtonClicked(object sender, EventArgs e) 
+        void ConnectToServerButtonClicked(object sender, EventArgs e)
         {
             client = new Networking(_logger, OnConnect, OnDisconnect, OnMessage, '\n');
 
-            try { 
-                client.Connect(serverName, port); }
-            catch (Exception) {
+            try
+            {
+                client.Connect(serverName, port);
+            }
+            catch (Exception)
+            {
                 DebugMessage.Text = "Could not connect to server";
                 return;
             }
@@ -89,7 +92,7 @@ namespace ClientGUI
         /// Switches from the welcome screen to the game view when the client connects to the server.
         /// </summary>
         /// <param name="channel">The networking object representing what is being connected to</param>
-        public void OnConnect(Networking channel) 
+        public void OnConnect(Networking channel)
         {
             WelcomeScreen.IsVisible = false;
             GameScreen.IsVisible = true;
@@ -101,7 +104,7 @@ namespace ClientGUI
         /// Displays an error message to the user when the client disconnects from the server.
         /// </summary>
         /// <param name="channel">The networking object representing what is being disconnected from</param>
-        public void OnDisconnect(Networking channel) 
+        public void OnDisconnect(Networking channel)
         {
             PlayDebugMessage.Text = "Player disconnected from server";
         }
@@ -111,14 +114,14 @@ namespace ClientGUI
         /// </summary>
         /// <param name="channel">The networking object representing where the message is coming from</param>
         /// <param name="message">The message that was sent</param>
-        public void OnMessage(Networking channel, string message) 
+        public void OnMessage(Networking channel, string message)
         {
             ReceiveDeadPlayers(message);
             ReceivePlayerID(message);
             ReceiveAllPlayers(message);
             ReceiveHeartbeat(message);
             ReceiveFood(message);
-            ReceiveFoodEaten(message); 
+            ReceiveFoodEaten(message);
         }
 
         /// <summary>
@@ -136,7 +139,7 @@ namespace ClientGUI
                 foreach (Food food in foodsList)
                 {
                     worldView.foods.Add(food.ID, food);
-                }  
+                }
             }
         }
 
@@ -159,9 +162,9 @@ namespace ClientGUI
         /// </summary>
         /// <param name="message">The message being checked for if it matches the protocol</param>
         /// <exception cref="Exception">Thrown if the JSON is improperly formatted</exception>
-        private void ReceiveAllPlayers(string message) 
+        private void ReceiveAllPlayers(string message)
         {
-            if (message.StartsWith(AgarioModels.Protocols.CMD_Update_Players)) 
+            if (message.StartsWith(AgarioModels.Protocols.CMD_Update_Players))
             {
                 AgarioModels.Player[] playersList = JsonSerializer.Deserialize<Player[]>(message.Replace(AgarioModels.Protocols.CMD_Update_Players, ""))
                 ?? throw new Exception("Invalid JSON");
@@ -187,8 +190,8 @@ namespace ClientGUI
             {
                 int heartbeatCount = JsonSerializer.Deserialize<int>(message.Replace(AgarioModels.Protocols.CMD_HeartBeat, ""));
 
-                worldView.convert_from_screen_to_world((float)(mousePosition.X -graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
-                
+                worldView.convert_from_screen_to_world((float)(mousePosition.X - graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
+
                 if (worldView.userPlayerID != 0 && worldView.players.ContainsKey(worldView.userPlayerID))
                 {
                     GameStatistics.Text = $"Mass: {worldView.players[worldView.userPlayerID].Mass}" +
@@ -219,7 +222,7 @@ namespace ClientGUI
                     worldView.foods.Remove(foodID);
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace ClientGUI
 
                 foreach (long playerID in deadPlayers)
                 {
-                   
+
                     if (worldView.userPlayerID == playerID)
                     {
                         DeathMessage();
