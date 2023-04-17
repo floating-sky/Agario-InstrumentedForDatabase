@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 /// Copyright: CS 3500 and C Wyatt Bruchhauser - This work may not 
 ///            be copied for use in Academic Coursework.
 ///
-/// I, C Wyatt Bruchhauserand Julia Thomas, certify that I wrote this code from scratch and
+/// I, C Wyatt Bruchhauser and Julia Thomas, certify that I wrote this code from scratch and
 /// did not copy it in part or whole from another source.  All 
 /// references used in the completion of the assignments are cited 
 /// in my README file.
 ///
 /// File Contents
 ///
-/// This file represents a Game Object that is any object in our Agario simulation.
+/// This file represents a Game Object that is any object in our Agario game.
 /// </summary>
 /// 
 namespace AgarioModels
@@ -28,7 +28,7 @@ namespace AgarioModels
     public class GameObject
     {
 
-        public float X { get; set; } //TODO: Instructions say not to have setters but serializer wont work without them?
+        public float X { get; set; } 
         public float Y { get; set; }
         
         public int ARGBColor { get; set; }
@@ -41,11 +41,7 @@ namespace AgarioModels
 
         public Vector2 location { get; set; }
 
-
-        public GameObject()
-        {
-            
-        }
+        public GameObject() { }
 }
 
     

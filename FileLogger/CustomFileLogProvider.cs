@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FileLogger
 {
+    /// <summary>
+    /// This class allows for the CustomFileLogger to be created.
+    /// </summary>
     public class CustomFileLogProvider : ILoggerProvider
     {
         /// <summary>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace FileLogger
 {
+    /// <summary>
+    /// This class represents a logger that writes to file in the application data folder.
+    /// </summary>
     class CustomFileLogger : ILogger
     {
         private readonly string fileName;

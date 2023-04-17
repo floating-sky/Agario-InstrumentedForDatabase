@@ -36,10 +36,14 @@ namespace ClientGUI
         private int screenHeight = 800; //TODO: Set to whatever the current value of the screen.
         private int screenWidth = 800;
 
-        public Dictionary<long, Food> foods { get; set; } = new Dictionary<long, Food>();
         public long userPlayerID;
+
+        public Dictionary<long, Food> foods { get; set; } = new Dictionary<long, Food>();
         public Dictionary<long, Player> players { get; set; }
 
+        /// <summary>
+        /// This draws the game view as well as all the food and players in the game.
+        /// </summary>
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             if (userPlayerID == 0) 
@@ -88,11 +92,28 @@ namespace ClientGUI
             }
         }
 
+        /// <summary>
+        /// This method converts the given mass to a circle radius.
+        /// </summary>
+        /// <param name="mass">mass that needs to be converted</param>
+        /// <returns>radius based off of the given mass</returns>
         public float calculateRadius(float mass) 
         {
             return (float)Math.Sqrt(mass / Math.PI);
         }
 
+
+        /// <summary>
+        /// Converts world coordinates to screen coordinates for display purposes.
+        /// </summary>
+        /// <param name="worldX">world x coordinate</param>
+        /// <param name="worldY">world y coordinate</param>
+        /// <param name="worldW">width in terms of world coordinates</param>
+        /// <param name="worldH">height in terms of world coordinates</param>
+        /// <param name="screenX">screen x coordinate</param>
+        /// <param name="screenY">screen y coordinate</param>
+        /// <param name="screenW">width in terms of screen coordinates</param>
+        /// <param name="screenH">height in terms of screen coordinates</param>
         private void convert_from_world_to_screen(
         in float worldX, in float worldY, in float worldW, in float worldH,
         out int screenX, out int screenY, out int screenW, out int screenH)
@@ -119,9 +140,16 @@ namespace ClientGUI
             screenH = (int)(worldH / cameraHeight * screenHeight);
         }
 
+        /// <summary>
+        /// Converts screen coordinates to world coordinates for display purposes.
+        /// </summary>
+        /// <param name="screenX">screen x coordinate</param>
+        /// <param name="screenY">screen y coordinate</param>
+        /// <param name="worldX">world x coordinate</param>
+        /// <param name="worldY">world y coordinate</param>
         public void convert_from_screen_to_world(in float screenX, in float screenY, out int worldX, out int worldY)
         {
-            //If the player is not found, just return zeroes.
+            //If the player is not found, just return zeros.
             if (userPlayerID == 0 || !players.ContainsKey(userPlayerID))
             {
                 worldX = 0;
@@ -144,7 +172,6 @@ namespace ClientGUI
             //Add the object's offset to the (0,0) of our camera.
             worldX = (int)(objectOffsetX + cameraLocationX);
             worldY = (int)(objectOffsetY + cameraLocationY);
-
         }
     }
 }
