@@ -80,10 +80,12 @@ namespace ClientGUI
             }
             catch (Exception)
             {
+                _logger.LogDebug("Failed connection to server");
                 DebugMessage.Text = "Could not connect to server";
                 return;
             }
 
+            _logger.LogInformation("Connected to server");
             client.AwaitMessagesAsync();
             client.Send(String.Format(Protocols.CMD_Start_Game, userName));
         }
@@ -106,6 +108,7 @@ namespace ClientGUI
         /// <param name="channel">The networking object representing what is being disconnected from</param>
         public void OnDisconnect(Networking channel)
         {
+            _logger.LogInformation("User disconnected from server during game");
             PlayDebugMessage.Text = "Player disconnected from server";
         }
 
@@ -116,6 +119,7 @@ namespace ClientGUI
         /// <param name="message">The message that was sent</param>
         public void OnMessage(Networking channel, string message)
         {
+            _logger.LogTrace("Received message from server");
             ReceiveDeadPlayers(message);
             ReceivePlayerID(message);
             ReceiveAllPlayers(message);
@@ -140,6 +144,7 @@ namespace ClientGUI
                 {
                     worldView.foods.Add(food.ID, food);
                 }
+                _logger.LogDebug("Received food from server");
             }
         }
 
@@ -154,6 +159,7 @@ namespace ClientGUI
                 long playerID = JsonSerializer.Deserialize<long>(message.Replace(AgarioModels.Protocols.CMD_Player_Object, ""));
 
                 worldView.userPlayerID = playerID;
+                _logger.LogDebug("Received player ID from server");
             }
         }
 
@@ -175,6 +181,7 @@ namespace ClientGUI
                     players.Add(player.ID, player);
                 }
                 worldView.players = players;
+                _logger.LogDebug("Received all player data from server");
             }
         }
 
@@ -204,6 +211,7 @@ namespace ClientGUI
 
                 client.Send(String.Format(Protocols.CMD_Move, worldMouseX, worldMouseY)); //Convert posX and posY into world coordinates.
                 SplitButton.Focus();
+                _logger.LogTrace($"Received heartbeat {heartbeatCount}");
             }
         }
 
@@ -214,13 +222,14 @@ namespace ClientGUI
         private void ReceiveFoodEaten(string message)
         {
             if (message.StartsWith(AgarioModels.Protocols.CMD_Eaten_Food))
-            {
+            {  
                 List<long> foodsEaten = JsonSerializer.Deserialize<List<long>>(message.Replace(AgarioModels.Protocols.CMD_Eaten_Food, ""));
 
                 foreach (long foodID in foodsEaten)
                 {
                     worldView.foods.Remove(foodID);
                 }
+                _logger.LogDebug("Removed eaten food from world");
             }
 
         }
@@ -245,6 +254,7 @@ namespace ClientGUI
                     }
                     worldView.players.Remove(playerID);
                 }
+                _logger.LogDebug("Removed dead players from world");
             }
         }
 
@@ -253,6 +263,7 @@ namespace ClientGUI
         /// </summary>
         private async void DeathMessage()
         {
+            _logger.LogInformation("The player has died");
             bool keepPlaying = await DisplayAlert("You died!", $"Final Mass: {worldView.players[worldView.userPlayerID].Mass}", "Restart Game", "Quit");
             if (keepPlaying)
             {
@@ -280,6 +291,7 @@ namespace ClientGUI
         {
             worldView.convert_from_screen_to_world((float)(mousePosition.X - graphicsViewTopLeft.X), (float)(mousePosition.Y - graphicsViewTopLeft.Y), out int worldMouseX, out int worldMouseY);
             client.Send(String.Format(Protocols.CMD_Split, (int)(worldMouseX), (int)(worldMouseY)));
+            _logger.LogInformation("Player has split");
         }
     }
 }

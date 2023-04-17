@@ -19,7 +19,7 @@ namespace ClientGUI
                     configure.AddConsole();
                     configure.AddDebug();
                     configure.AddProvider(new FileLogger.CustomFileLogProvider());
-                    configure.SetMinimumLevel(LogLevel.Debug);
+                    configure.SetMinimumLevel(LogLevel.Information);
                 })
             .AddTransient<MainPage>();
 
