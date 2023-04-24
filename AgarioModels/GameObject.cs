@@ -27,7 +27,6 @@ namespace AgarioModels
 {
     public class GameObject
     {
-
         public float X { get; set; } 
         public float Y { get; set; }
         
